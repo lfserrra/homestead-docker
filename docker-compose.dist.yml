@@ -5,20 +5,22 @@ web:
         - "8000:80" # web
         - "2222:22" # ssh
     volumes:
-        - ~/.composer:/home/homestead/.composer # composer caching
-        - ~/.gitconfig:/home/homestead/.gitconfig # Git configuration ( access alias && config )
-        - ~/.ssh:/home/homestead/.ssh # Ssh keys for easy deployment inside the container
-        - ~/apps:/apps # all apps
-        - ~/apps/volumes/nginx/sites-available:/etc/nginx/sites-available # nginx sites ( in case you recreate the container )
-        - ~/apps/volumes/nginx/sites-enabled:/etc/nginx/sites-enabled # nginx sites ( in case you recreate the container )
-        - ~/volumes/nginx/ssl:/etc/nginx/ssl
+        - //d/docker/.composer:/home/homestead/.composer # composer caching
+        - //d/docker/.gitconfig:/home/homestead/.gitconfig # Git configuration ( access alias && config )
+        - //d/docker/.ssh:/home/homestead/.ssh # Ssh keys for easy deployment inside the container
+        - //d/docker/apps:/apps # all apps
+        - //d/docker/nginx/sites-available:/etc/nginx/sites-available # nginx sites ( in case you recreate the container )
+        - //d/docker/nginx/sites-enabled:/etc/nginx/sites-enabled # nginx sites ( in case you recreate the container )
+        - //d/docker/nginx/ssl:/etc/nginx/ssl
     links:
         - mysql
 
 mysql:
     image: mysql:5.7
     restart: unless-stopped
+    ports:
+        - "3306:3306"
     environment:
-        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        MYSQL_ROOT_PASSWORD: 'root'
     volumes:
-        - ~/volumes/mysql:/var/lib/mysql
+        - //d/docker/mysql:/var/lib/mysql
